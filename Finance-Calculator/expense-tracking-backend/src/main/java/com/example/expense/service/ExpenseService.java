@@ -10,4 +10,5 @@ public interface ExpenseService {
     Double getDailyTotal();
     void deleteExpense(Long id);
 	Double getWeeklyTotal();
+    List<CategoryTotalDTO> getCategoryTotals(int month, int year);
 }

@@ -5,12 +5,14 @@ import {
   deleteExpense,
   getDailyTotal,
   getWeeklyTotal,
-  getMonthlyTotal
+  getMonthlyTotal,
+  getCategoryTotals
 } from './api/expenseService';
 
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import SummaryCard from './components/SummaryCard';
+import CategoryBreakdown from './components/CategoryBreakdown';
 
 import logo from './assets/Anbarasan icon.png';
 
@@ -19,6 +21,7 @@ function App() {
   const [daily, setDaily] = useState(0);
   const [weekly, setWeekly] = useState(0);
   const [monthly, setMonthly] = useState(0);
+  const [categoryTotals, setCategoryTotals] = useState([]);
 
   const now = new Date();
   const month = now.getMonth() + 1;
@@ -29,17 +32,19 @@ function App() {
   }, []);
 
   const refreshData = async () => {
-    const [list, d, w, m] = await Promise.all([
+    const [list, d, w, m, categories] = await Promise.all([
       getExpenses(),
       getDailyTotal(),
       getWeeklyTotal(),
-      getMonthlyTotal(month, year)
+      getMonthlyTotal(month, year),
+      getCategoryTotals(month, year)
     ]);
 
     setExpenses(list.data);
     setDaily(d.data);
     setWeekly(w.data);
     setMonthly(m.data);
+    setCategoryTotals(categories.data);
   };
 
   const addExpense = async (data) => {
@@ -70,6 +75,14 @@ function App() {
       </header>
 
       <SummaryCard total={monthly} daily={daily} weekly={weekly} />
+
+      <section className="section">
+        <CategoryBreakdown
+          totals={categoryTotals}
+          monthLabel={now.toLocaleString('default', { month: 'long' })}
+          monthlyTotal={monthly}
+        />
+      </section>
 
       <section className="section">
         <h2 className="section-title">🧾 Add a New Expense Transaction 🧾</h2>

@@ -8,3 +8,4 @@ export const deleteExpense = (id) => axios.delete(`${API_URL}/${id}`);
 export const getMonthlyTotal = (month, year) => axios.get(`${API_URL}/total?month=${month}&year=${year}`);
 export const getDailyTotal = () => axios.get(`${API_URL}/daily-total`);
 export const getWeeklyTotal = () => axios.get(`${API_URL}/weekly-total`);
+export const getCategoryTotals = (month, year) => axios.get(`${API_URL}/category-totals?month=${month}&year=${year}`);
