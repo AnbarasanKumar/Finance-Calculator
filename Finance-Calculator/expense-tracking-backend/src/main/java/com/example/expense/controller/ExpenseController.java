@@ -46,4 +46,9 @@ public class ExpenseController {
     public ResponseEntity<Double> getWeeklyTotal() {
         return ResponseEntity.ok(service.getWeeklyTotal());
     }
+
+    @GetMapping("/category-totals")
+    public ResponseEntity<List<CategoryTotalDTO>> getCategoryTotals(@RequestParam int month, @RequestParam int year) {
+        return ResponseEntity.ok(service.getCategoryTotals(month, year));
+    }
 }

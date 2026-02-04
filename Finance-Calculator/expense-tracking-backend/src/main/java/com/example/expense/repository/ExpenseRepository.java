@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.expense.entity.*;
+import java.util.List;
 
 
 @Repository
@@ -18,4 +19,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     
     @Query("SELECT SUM(e.amount) FROM Expense e WHERE YEARWEEK(e.expenseDate, 0) = YEARWEEK(CURDATE(), 0)")
     Double sumWeeklyExpenses();
+
+    @Query("SELECT e.category, SUM(e.amount) FROM Expense e WHERE MONTH(e.expenseDate) = :month AND YEAR(e.expenseDate) = :year GROUP BY e.category")
+    List<Object[]> sumByCategoryForMonth(@Param("month") int month, @Param("year") int year);
 }

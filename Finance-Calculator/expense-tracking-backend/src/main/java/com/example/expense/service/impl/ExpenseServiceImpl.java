@@ -69,4 +69,15 @@ public class ExpenseServiceImpl implements ExpenseService {
         Double total = repository.sumWeeklyExpenses();
         return (total != null) ? total : 0.0;
     }
+
+    @Override
+    public List<CategoryTotalDTO> getCategoryTotals(int month, int year) {
+        return repository.sumByCategoryForMonth(month, year).stream()
+                .map(result -> {
+                    String category = (String) result[0];
+                    Double total = (Double) result[1];
+                    return new CategoryTotalDTO(category, total != null ? total : 0.0);
+                })
+                .collect(Collectors.toList());
+    }
 }
